@@ -1,7 +1,9 @@
 const express = require('express');
+const { addMsg, getMsg } = require('../controllers/msgControllers');
 
 const router = express.Router();
 
-// router.route('/:id').post(addMsg).get(getMsg).delete(removeMsg);
+router.route('/').post(addMsg);
+router.route('/:id').get(getMsg);
 
 module.exports = router ;

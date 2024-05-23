@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const cors = require('cors');
 const textRoutes = require('./Routes/textRoutes');
+const connectDB = require('./Config/db')
 
 dotenv.config();
 
@@ -11,6 +12,8 @@ const PORT = process.env.PORT ;
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cors());
+
+connectDB();
 
 app.use('/api/assistant',textRoutes);
 
