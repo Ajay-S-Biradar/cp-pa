@@ -6,12 +6,12 @@ const addMsg = asyncHandler(
         const {text, link_id, expiresAt} = req.body;
 
         if(!text || !link_id || !expiresAt){
-            res.status(400).send({filled:false});
+            res.send({filled:false});
         }
         
         const linkExists = await Msg.findOne({link_id:link_id});
         if(linkExists){
-            res.status(400).send({exists:true, filled:true})
+            res.send({exists:true, filled:true})
             return;
         }
 
@@ -36,7 +36,7 @@ const getMsg = asyncHandler(async (req,res)=>{
     const {id} = req.params;
     const linkExists = await Msg.findOne({link_id:id});
     if(!linkExists){
-        res.status(400).send({invalid:true});
+        res.send({invalid:true});
         return;
     }
     res.status(200).send({linkExists,invalid:false});

@@ -2,6 +2,8 @@ import './App.css'
 import {createBrowserRouter, RouterProvider, Outlet} from "react-router-dom"
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
+import TextPage from './pages/TextPage'
+import NotFound from './pages/NotFound'
 
 const AppLayout = ()=>{
   return (
@@ -20,6 +22,22 @@ const AppRouter = createBrowserRouter([
       {
         path:'/',
         element:<Home />
+      },
+      {
+        path:'/:id',
+        element:<TextPage />
+      },
+      {
+        path:'notfound',
+        element:<NotFound />
+      },
+      {
+        path:"/use",
+        element:"usage"
+      },
+      {
+        path:'help',
+        element:"help"
       }
     ]
   }
