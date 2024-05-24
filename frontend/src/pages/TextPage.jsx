@@ -31,7 +31,7 @@ const TextPage = () => {
     try {
       await navigator.clipboard.writeText(text);
       setCopySuccess(true);
-      setTimeout(() => setCopySuccess(false), 5000); // Reset success message after 2 seconds
+      setTimeout(() => setCopySuccess(false), 5000);
     } catch (error) {
       console.error('Failed to copy text:', error);
     }
