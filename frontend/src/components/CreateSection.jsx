@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import { API_URL } from '../utils/constant';
 
 const CreateSection = ({ timer, setTimer, id, text }) => {
   const navigate = useNavigate();
@@ -34,7 +35,7 @@ const CreateSection = ({ timer, setTimer, id, text }) => {
     const milisec = convert(timer);
 
     try {
-      const res = await axios.post('http://localhost:2345/api/assistant/', {
+      const res = await axios.post(API_URL, {
         text: text,
         link_id: id,
         expiresAt: milisec,

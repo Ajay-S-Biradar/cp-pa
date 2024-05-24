@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { API_URL } from '../utils/constant';
 
 const TextPage = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const TextPage = () => {
 
   const apiCall = async () => {
     try {
-      const res = await axios.get(`http://localhost:2345/api/assistant/${id}`);
+      const res = await axios.get(API_URL+id);
       if (res?.data.invalid) {
         navigate('/notfound');
       } else {

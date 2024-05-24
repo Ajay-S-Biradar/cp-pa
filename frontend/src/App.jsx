@@ -4,6 +4,7 @@ import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import TextPage from './pages/TextPage'
 import NotFound from './pages/NotFound'
+import ContactUs from './pages/ContactUs'
 
 const AppLayout = ()=>{
   return (
@@ -36,8 +37,8 @@ const AppRouter = createBrowserRouter([
         element:"usage"
       },
       {
-        path:'help',
-        element:"help"
+        path:'contactus',
+        element:<ContactUs />
       }
     ]
   }
