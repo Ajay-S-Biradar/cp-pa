@@ -25,14 +25,6 @@ const AppRouter = createBrowserRouter([
         element:<Home />
       },
       {
-        path:'/:id',
-        element:<TextPage />
-      },
-      {
-        path:'notfound',
-        element:<NotFound />
-      },
-      {
         path:"/use",
         element:"usage"
       },
@@ -41,7 +33,15 @@ const AppRouter = createBrowserRouter([
         element:<ContactUs />
       }
     ]
-  }
+  },
+  {
+    path:'notfound',
+    element:[<Navbar />, <NotFound />]
+  },
+  {
+    path:':id',
+    element:[<Navbar />, <TextPage />]
+  },
 ])
 
 function App() {
