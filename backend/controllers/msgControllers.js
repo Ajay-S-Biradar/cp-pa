@@ -42,4 +42,40 @@ const getMsg = asyncHandler(async (req,res)=>{
     res.status(200).send({linkExists,invalid:false});
 })
 
-module.exports = {addMsg, getMsg} ;
+const updateMsg = asyncHandler(async (req,res)=>{
+    const {text, expiresAt} = req?.body;
+    const {id} = req.params;
+
+    console.log(id);
+
+    if(!text || !id || !expiresAt){
+        res.send({filled:false});
+    }
+
+    const expirationDate = new Date(Date.now() + expiresAt);
+
+    const UpdateLink = await Msg.updateOne({link_id:id},{
+        text,
+        link_id:id,
+        expiresAt:expirationDate
+    });
+    if(UpdateLink){
+        res.send({Update:"Success",UpdateLink});
+    }
+    else{
+        res.send({Error:"Database didnt get updated"})
+    }
+})
+
+const deleteMsg = asyncHandler(async (req,res)=>{
+    const {id} = req.params;
+    const deletion = await Msg.deleteOne({link_id:id});
+    if(deletion){
+        res.send({delete:"success"});
+    }
+    else{
+        res.send({Error:"unable to delete"});
+    }
+});
+
+module.exports = {addMsg, getMsg, updateMsg, deleteMsg} ;
