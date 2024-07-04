@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../utils/constant';
 
-const CreateSection = ({isEditing, setIsEditing, timer, setTimer, id, text }) => {
+const CreateSection = ({setLoader, isEditing, setIsEditing, timer, setTimer, id, text }) => {
   const navigate = useNavigate();
   const [dropdown, setDropdown] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -42,6 +42,7 @@ const CreateSection = ({isEditing, setIsEditing, timer, setTimer, id, text }) =>
           link_id: id,
           expiresAt: milisec,
         });
+        setIsEditing(false);
         console.log(res);
         // if (res?.data?.exists) {
         //   setAlert(true);
@@ -60,6 +61,7 @@ const CreateSection = ({isEditing, setIsEditing, timer, setTimer, id, text }) =>
     }
     else{
       try {
+        setLoader(true);
         const res = await axios.post(API_URL, {
           text: text,
           link_id: id,
@@ -84,7 +86,7 @@ const CreateSection = ({isEditing, setIsEditing, timer, setTimer, id, text }) =>
   };
 
   return (
-    <div className="flex items-center gap-6 mt-3">
+    <div className="flex items-center gap-6">
       <form className="max-w-[13rem] mx-auto">
         <label htmlFor="time" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">
           Select time:
