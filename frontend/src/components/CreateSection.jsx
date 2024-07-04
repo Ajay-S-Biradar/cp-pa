@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../utils/constant';
 
-const CreateSection = ({ timer, setTimer, id, text }) => {
+const CreateSection = ({isEditing, setIsEditing, timer, setTimer, id, text }) => {
   const navigate = useNavigate();
   const [dropdown, setDropdown] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -29,29 +29,57 @@ const CreateSection = ({ timer, setTimer, id, text }) => {
       setTimeout(() => {
         setFillAll(false);
       }, 3000);
+      setIsEditing(false);
       return;
     }
 
     const milisec = convert(timer);
-
-    try {
-      const res = await axios.post(API_URL, {
-        text: text,
-        link_id: id,
-        expiresAt: milisec,
-      });
-
-      if (res?.data?.exists) {
-        setAlert(true);
-        setTimeout(() => {
-          setAlert(false);
-        }, 6000);
-      } else {
-        navigate(`/${res?.data.link_id}`);
+    if(isEditing){
+      console.log("updating....",API_URL+id)
+      try {
+        const res = await axios.post(API_URL+id, {
+          text: text,
+          link_id: id,
+          expiresAt: milisec,
+        });
+        console.log(res);
+        // if (res?.data?.exists) {
+        //   setAlert(true);
+        //   setTimeout(() => {
+        //     setAlert(false);
+        //   }, 6000);
+        // } else {
+        //   let ids = JSON.parse(sessionStorage.getItem("link_id")) || [];
+        //   ids.push(res?.data?.link_id);
+        //   sessionStorage.setItem("link_id", JSON.stringify(ids));
+        //   navigate(`/${res?.data.link_id}`);
+        // }
+      } catch (error) {
+        console.error("Error creating link:", error);
       }
-    } catch (error) {
-      console.error("Error creating link:", error);
-      // Optionally, handle error state and display a user-friendly message
+    }
+    else{
+      try {
+        const res = await axios.post(API_URL, {
+          text: text,
+          link_id: id,
+          expiresAt: milisec,
+        });
+        console.log(res);
+        if (res?.data?.exists) {
+          setAlert(true);
+          setTimeout(() => {
+            setAlert(false);
+          }, 6000);
+        } else {
+          let ids = JSON.parse(sessionStorage.getItem("link_id")) || [];
+          ids.push(res?.data?.link_id);
+          sessionStorage.setItem("link_id", JSON.stringify(ids));
+          navigate(`/${res?.data.link_id}`);
+        }
+      } catch (error) {
+        console.error("Error creating link:", error);
+      }
     }
   };
 
@@ -142,7 +170,7 @@ const CreateSection = ({ timer, setTimer, id, text }) => {
           onClick={handleCreate}
           className="mt-8 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
         >
-          Create
+         { isEditing?"Update" :"Create"}
         </button>
       </div>
       {alert && (

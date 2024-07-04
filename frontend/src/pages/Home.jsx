@@ -8,12 +8,14 @@ const Home = () => {
   const [timer,setTimer] = useState();
   const [id,setId] = useState();
 
+  const [isEditing,setIsEditing] = useState(false);
+
   return (
     <div className='mx-[10%]'>
         <TextArea text={text} setText={setText} />
         <div className='flex justify-around'>
             <Id id={id} setId={setId} />
-            <CreateSection text={text} timer={timer} setTimer={setTimer} id={id} />
+            <CreateSection isEditing={isEditing} text={text} timer={timer} setTimer={setTimer} id={id} />
         </div>
     </div>
   )
