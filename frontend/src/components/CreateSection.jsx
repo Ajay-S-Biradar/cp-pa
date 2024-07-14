@@ -1,9 +1,9 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { API_URL } from '../utils/constant';
 
-const CreateSection = ({setLoader, isEditing, setIsEditing, timer, setTimer, id, text }) => {
+const CreateSection = ({setIsEditEnabled, setLoader, isEditing, setIsEditing, timer, setTimer, id, text }) => {
   const navigate = useNavigate();
   const [dropdown, setDropdown] = useState(false);
   const [alert, setAlert] = useState(false);
@@ -43,6 +43,7 @@ const CreateSection = ({setLoader, isEditing, setIsEditing, timer, setTimer, id,
           expiresAt: milisec,
         });
         setIsEditing(false);
+        setIsEditEnabled(true);
         console.log(res);
         // if (res?.data?.exists) {
         //   setAlert(true);
@@ -85,6 +86,17 @@ const CreateSection = ({setLoader, isEditing, setIsEditing, timer, setTimer, id,
     }
   };
 
+  const handleDelete = async ()=>{
+    try{
+      const res = axios.delete(API_URL+id);
+      if(res){
+        navigate('/');
+      }
+    }catch(error){
+      console.error("Error: ",error);
+    }
+  }
+
   return (
     <div className="flex items-center gap-6">
       <form className="max-w-[13rem] mx-auto">
@@ -126,7 +138,7 @@ const CreateSection = ({setLoader, isEditing, setIsEditing, timer, setTimer, id,
           </button>
           <div
             id="dropdown-duration"
-            className={`${dropdown ? '' : 'hidden'} absolute right-0 top-5 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700`}
+            className={`${dropdown ? '' : 'hidden'} absolute right-10 top-0 z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-36 dark:bg-gray-700`}
           >
             <ul
               className="py-2 text-sm text-gray-700 dark:text-gray-200"
@@ -135,7 +147,7 @@ const CreateSection = ({setLoader, isEditing, setIsEditing, timer, setTimer, id,
               <li>
                 <button
                   type="button"
-                  className="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="inline-flex w-full px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                   onClick={() => handleDurationSelect('00:30')}
                 >
@@ -145,7 +157,7 @@ const CreateSection = ({setLoader, isEditing, setIsEditing, timer, setTimer, id,
               <li>
                 <button
                   type="button"
-                  className="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="inline-flex w-full px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                   onClick={() => handleDurationSelect('01:00')}
                 >
@@ -155,7 +167,7 @@ const CreateSection = ({setLoader, isEditing, setIsEditing, timer, setTimer, id,
               <li>
                 <button
                   type="button"
-                  className="inline-flex w-full px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
+                  className="inline-flex w-full px-4 py-1 text-sm text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-600 dark:hover:text-white"
                   role="menuitem"
                   onClick={() => handleDurationSelect('02:00')}
                 >
@@ -174,6 +186,12 @@ const CreateSection = ({setLoader, isEditing, setIsEditing, timer, setTimer, id,
         >
          { isEditing?"Update" :"Create"}
         </button>
+        {isEditing && <button
+        className="mt-8 text-white bg-gradient-to-r from-purple-500 via-purple-600 to-purple-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-purple-300 dark:focus:ring-purple-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        onClick={handleDelete}
+        >
+          Delete
+        </button>}
       </div>
       {alert && (
         <div className="absolute mx-[15%] right-0 bottom-0 flex p-3 mb-3 text-sm text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">

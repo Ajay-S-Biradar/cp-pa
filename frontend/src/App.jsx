@@ -5,6 +5,7 @@ import Home from './pages/Home'
 import TextPage from './pages/TextPage'
 import NotFound from './pages/NotFound'
 import ContactUs from './pages/ContactUs'
+import Usage from './pages/Usage'
 
 const AppLayout = ()=>{
   return (
@@ -26,7 +27,7 @@ const AppRouter = createBrowserRouter([
       },
       {
         path:"/use",
-        element:"usage"
+        element:<Usage />
       },
       {
         path:'contactus',
